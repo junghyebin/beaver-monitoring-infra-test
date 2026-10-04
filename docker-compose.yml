@@ -39,3 +39,21 @@ services:
       - SMTP_PORT=587
     depends_on:
       - mailserver
+      
+  # 3. 프로메테우스 (모니터링 데이터 수집)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+
+  # 4. 그라파나 (대시보드 및 알림 UI)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    depends_on:
+      - prometheus
