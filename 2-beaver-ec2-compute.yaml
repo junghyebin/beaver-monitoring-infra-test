@@ -52,6 +52,12 @@ Resources:
       InstanceType: t3.micro
       ImageId: !Sub "{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-minimal-kernel-6.1-x86_64}}"
       KeyName: !Ref KeyName
+      # 2026.10.04 아래 블록을 추가하여 루트 볼륨 크기를 20GB로 확장하기 위해 지정
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 20
+            VolumeType: gp3
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
