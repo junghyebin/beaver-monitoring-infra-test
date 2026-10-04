@@ -17,7 +17,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       # TemplateURL에 S3 [객체 URL].
-      TemplateURL: "https://beaber-infra-bucket-2026.s3.ap-northeast-2.amazonaws.com/1-beaver-vpc-network.yaml"
+      TemplateURL: "https://beaver-infra-bucket-2026.s3.ap-northeast-2.amazonaws.com/1-beaver-vpc-network.yaml"
       
   # ==========================================
   # 2-beaver-ec2-compute.yaml
@@ -26,7 +26,7 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       # TemplateURL에 S3 [객체 URL].
-      TemplateURL: "https://beaber-infra-bucket-2026.s3.ap-northeast-2.amazonaws.com/2-beaver-ec2-compute.yaml"
+      TemplateURL: "https://beaver-infra-bucket-2026.s3.ap-northeast-2.amazonaws.com/2-beaver-ec2-compute.yaml"
       Parameters:
         ParentVpcId: !GetAtt NetworkStack.Outputs.VpcId
         ParentPubSubnet1: !GetAtt NetworkStack.Outputs.PubSubnet1Id
