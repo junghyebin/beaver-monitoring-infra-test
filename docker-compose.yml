@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # 1. 메일 서버 핵심 엔진 (SMTP, IMAP 등)
+  mailserver:
+    image: ghcr.io/docker-mailserver/docker-mailserver:latest      
+    container_name: mailserver
+    hostname: mail.example.com
+    restart: unless-stopped
+    ports:
+      - "25:25"     # SMTP
+      - "143:143"   # IMAP (비암호화)
+      - "587:587"   # SMTP Submission
+      - "993:993"   # IMAPS
+    environment:
+      - ENABLE_SPAMASSASSIN=1
+      - ENABLE_CLAMAV=1
+      - ENABLE_FAIL2BAN=1
+    volumes:
+      - ./mail-data:/var/mail
+      - ./mail-state:/var/mail-state
+      - ./mail-logs:/var/log/mail
+      - ./config:/tmp/docker-mailserver
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+
+  # 2. 웹메일 UI 클라이언트 (Roundcube)
+  webmail:
+    image: roundcube/roundcubemail:latest
+    container_name: webmail
+    restart: unless-stopped
+    ports:
+      - "8080:80"   # 브라우저 접속용 포트
+    environment:
+      - IMAP_HOST=mailserver
+      - IMAP_PORT=143
+      - SMTP_HOST=mailserver
+      - SMTP_PORT=587
+    depends_on:
+      - mailserver

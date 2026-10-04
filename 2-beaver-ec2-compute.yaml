@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: "Child Stack 2 - Security Groups & EC2 Computing Instances (t3.micro)"
+
+Parameters:
+  ParentVpcId:
+    Type: String
+  ParentPubSubnet1:
+    Type: String
+  ParentPvtSubnet1:
+    Type: String
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+  #IncomingUserData:
+    #Type: String
+
+Resources:
+  PublicSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow HTTP(80) and SSH(22) for Web Node"
+      VpcId: !Ref ParentVpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: Beaver-PubSG
+
+  PrivateSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Internal Communication for App Node"
+      VpcId: !Ref ParentVpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 10.0.0.0/16
+      Tags:
+        - Key: Name
+          Value: Beaver-PvtSG
+
+  PublicEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      ImageId: !Sub "{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-minimal-kernel-6.1-x86_64}}"
+      KeyName: !Ref KeyName
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo dnf update -y
+          sudo dnf install -y nginx
+          sudo systemctl start nginx
+          sudo systemctl enable nginx
+          echo "System Update and nginx Installation Completed Successfully!"
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          SubnetId: !Ref ParentPubSubnet1
+          GroupSet:
+            - !Ref PublicSecurityGroup
+      Tags:
+        - Key: Name
+          Value: Beaver-PubEC2
+
+  PrivateEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      ImageId: !Sub "{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-minimal-kernel-6.1-x86_64}}"
+      KeyName: !Ref KeyName
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: false
+          DeviceIndex: 0
+          SubnetId: !Ref ParentPvtSubnet1
+          GroupSet:
+            - !Ref PrivateSecurityGroup
+      Tags:
+        - Key: Name
+          Value: Beaver-PvtEC2
