@@ -27,6 +27,7 @@ Resources:
     Properties:
       # TemplateURL에 S3 [객체 URL].
       TemplateURL: "https://beaver-infra-bucket-2026.s3.ap-northeast-2.amazonaws.com/2-beaver-ec2-compute.yaml"
+      DependsOn: NetworkStack   # 이 줄을 추가하여 네트워크가 먼저 생성되도록 보장합니다.
       Parameters:
         ParentVpcId: !GetAtt NetworkStack.Outputs.VpcId
         ParentPubSubnet1: !GetAtt NetworkStack.Outputs.PubSubnet1Id
