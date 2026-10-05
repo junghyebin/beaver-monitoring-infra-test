@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: |
   [Main Root Stack] Beaver Team - KT Cloud Infra 5 (Nested Stacks with Isolated UserData)
   - Objective: Prevent server downtime during traffic spikes.
-  - Architecture: Multi-AZ 4-Subnets, t3.micro Compute, Separated Shell Script via S3.
+  - Architecture: Multi-AZ 4-Subnets, t3.small Compute, Separated Shell Script via S3.
 
 Parameters:
   KeyName:

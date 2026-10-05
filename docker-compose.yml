@@ -13,8 +13,8 @@ services:
       - "587:587"   # SMTP Submission
       - "993:993"   # IMAPS
     environment:
-      - ENABLE_SPAMASSASSIN=1
-      - ENABLE_CLAMAV=1
+      - ENABLE_SPAMASSASSIN=0
+      - ENABLE_CLAMAV=0
       - ENABLE_FAIL2BAN=1
     volumes:
       - ./mail-data:/var/mail

@@ -89,7 +89,7 @@ Resources:
   PrivateEC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t3.micro
+      InstanceType: t3.small
       ImageId: !Sub "{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-minimal-kernel-6.1-x86_64}}"
       KeyName: !Ref KeyName
       NetworkInterfaces:
