@@ -11,7 +11,7 @@ Parameters:
   KeyName:
     Type: AWS::EC2::KeyPair::KeyName
   #IncomingUserData:
-    #Type: String
+    #Type: StringBash
 
 Resources:
   PublicSecurityGroup:
@@ -61,7 +61,7 @@ Resources:
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
-          sudo dnf update -y
+          #sudo dnf update -y
           sudo dnf install -y nginx
           sudo systemctl start nginx
           sudo systemctl enable nginx
