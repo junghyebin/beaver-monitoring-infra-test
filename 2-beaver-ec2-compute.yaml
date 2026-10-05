@@ -64,7 +64,7 @@ Resources:
           sudo dnf install -y nginx
           sudo systemctl start nginx
           sudo systemctl enable nginx
-          echo "System and nginx Installation Completed Successfully!"
+          echo "nginx Installation Completed Successfully!"
       NetworkInterfaces:
         - AssociatePublicIpAddress: true
           DeviceIndex: 0
