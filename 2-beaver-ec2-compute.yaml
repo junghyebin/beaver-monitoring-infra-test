@@ -61,10 +61,21 @@ Resources:
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
+          sudo dnf update -y
+          # Docker 설치 (Amazon Linux 2023 기준)
+          sudo dnf install -y docker
+          sudo systemctl start docker
+          sudo systemctl enable docker
+          sudo usermod -aG docker ec2-user
+          sudo mkdir -p /usr/local/lib/docker/cli-plugins
+          sudo curl -SL https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
+          sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+        
+          # Nginx 등 필요한 추가 설정
           sudo dnf install -y nginx
           sudo systemctl start nginx
           sudo systemctl enable nginx
-          echo "Public Nginx Installation Completed Successfully!"
+          echo "Auto-setup completed!"
       NetworkInterfaces:
         - AssociatePublicIpAddress: true
           DeviceIndex: 0
