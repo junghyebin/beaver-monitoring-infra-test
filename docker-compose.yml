@@ -44,7 +44,7 @@ services:
       - ROUNDCUBEMAIL_DB_TYPE=sqlite
       - ROUNDCUBEMAIL_DSN=sqlite:////var/roundcube/db/sqlite.db?mode=0646
     volumes:
-      - ./config/roundcube/config.inc.php:/var/www/html/config/config.inc.php
+      #- ./config/roundcube/config.inc.php:/var/www/html/config/config.inc.php
       - ./config/roundcube/db:/var/roundcube/db
     depends_on:
       - mailserver

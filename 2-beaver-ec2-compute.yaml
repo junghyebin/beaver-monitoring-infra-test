@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: "Child Stack 2 - Security Groups & EC2 Computing Instances (t3.micro)"
+Description: "Child Stack 2 - Security Groups & EC2 Computing Instances (t3.small)"
 
 Parameters:
   ParentVpcId:
@@ -49,7 +49,7 @@ Resources:
   PublicEC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t3.micro
+      InstanceType: t3.small
       ImageId: !Sub "{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-minimal-kernel-6.1-x86_64}}"
       KeyName: !Ref KeyName
       # 2026.10.04 아래 블록을 추가하여 루트 볼륨 크기를 20GB로 확장하기 위해 지정
