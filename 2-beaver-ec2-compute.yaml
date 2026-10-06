@@ -83,8 +83,7 @@ Resources:
           # (※ GitHub raw 링크, Object Storage 공개 URL, 또는 S3/Object Storage Presigned URL 등을 입력하세요)
           mkdir -p /home/ec2-user/beaver-monitoring
           cd /home/ec2-user/beaver-monitoring
-          curl -o docker-compose.yml "https://raw.githubusercontent.com/사용자계정/저장소명/main/docker-compose.yml"
-
+          aws s3 cp s3://beaver-infra-bucket-2026/2-beaver-ec2-compute.yaml ./
           # 5. 권한 설정 및 도커 컴포즈 백그라운드 실행
           chown -R ec2-user:ec2-user /home/ec2-user/beaver-monitoring
           sudo -u ec2-user docker compose up -d
